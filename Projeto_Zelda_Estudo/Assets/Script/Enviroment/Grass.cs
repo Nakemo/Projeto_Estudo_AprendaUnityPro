@@ -20,7 +20,7 @@ public class Grass : MonoBehaviour
     
     IEnumerator GrowGrass()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(6f);
         transform.localScale = new Vector3(3f, 3f, 3f);
         isCut = false;
     }
