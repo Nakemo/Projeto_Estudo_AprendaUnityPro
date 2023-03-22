@@ -27,7 +27,7 @@ public class PlayerController : MonoBehaviour
     private bool isAttack;
     [SerializeField]
     Collider[] hitInfo;
-
+    public int amountDmg;
 
   
     void Start()
@@ -66,6 +66,11 @@ public class PlayerController : MonoBehaviour
         fxAttack.Emit(1);
 
         hitInfo = Physics.OverlapSphere(hitBox.position, hitRange, hitMask);
+
+        foreach (Collider c in hitInfo) 
+        {
+            c.gameObject.SendMessage("GetHit", amountDmg, SendMessageOptions.DontRequireReceiver);
+        }
     }
 
 
