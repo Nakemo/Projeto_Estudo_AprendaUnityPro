@@ -11,7 +11,8 @@ public enum enemyState
 
 public class GameManager : MonoBehaviour
 {
-
+    [Header("Slime AI")]
+    public Transform[] slimeWayPoints;
 
     // Start is called before the first frame update
     void Start()

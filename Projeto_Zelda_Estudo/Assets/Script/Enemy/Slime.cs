@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Slime : MonoBehaviour
 {
+    private GameManager gameManager;
+
+
     private Animator anim;
     public int HP;
 
@@ -17,6 +20,7 @@ public class Slime : MonoBehaviour
 
     private void Start()
     {
+        gameManager = FindObjectOfType(typeof(GameManager)) as GameManager;
         anim = GetComponent<Animator>();
         ChangeState(state);
     }
