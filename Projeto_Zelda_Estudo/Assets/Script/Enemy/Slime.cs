@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Slime : MonoBehaviour
 {
     private GameManager gameManager;
-
-
+   
     private Animator anim;
     public int HP;
 
@@ -18,10 +18,17 @@ public class Slime : MonoBehaviour
 
     private bool isDead;
 
+    //I.A
+    private NavMeshAgent agent;
+    private int idWayPoint;
+    private Vector3 destination;
+
+
     private void Start()
     {
         gameManager = FindObjectOfType(typeof(GameManager)) as GameManager;
         anim = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
         ChangeState(state);
     }
 
@@ -90,7 +97,9 @@ public class Slime : MonoBehaviour
 
         switch (state)
         {
-            case enemyState.IDLE:                
+            case enemyState.IDLE:
+                destination = transform.position;
+                agent.destination = destination;
                 StartCoroutine("IDLE");
                 break;
 
@@ -99,6 +108,9 @@ public class Slime : MonoBehaviour
                 break;
 
             case enemyState.PATROL:
+                idWayPoint = Random.Range(0, gameManager.slimeWayPoints.Length);
+                destination = gameManager.slimeWayPoints[idWayPoint].position;
+                agent.destination = destination;
                 StartCoroutine("PATROL");
                 break;
         }
@@ -108,7 +120,18 @@ public class Slime : MonoBehaviour
     IEnumerator IDLE() 
     {
         yield return new WaitForSeconds(idleWaitTime);
-        if (Rand() < 50)
+        StayStill(60);
+    }
+    IEnumerator PATROL() 
+    {
+        yield return new WaitForSeconds(patrolWaitTime);
+        StayStill(25);
+    }
+    #endregion
+
+    private void StayStill(int yes) 
+    {
+        if (Rand() <= yes)
         {
             ChangeState(enemyState.IDLE);
         }
@@ -117,12 +140,6 @@ public class Slime : MonoBehaviour
             ChangeState(enemyState.PATROL);
         }
     }
-    IEnumerator PATROL() 
-    {
-        yield return new WaitForSeconds(patrolWaitTime);
-        ChangeState(enemyState.IDLE);
-    }
-    #endregion
 
     private int Rand() 
     {
