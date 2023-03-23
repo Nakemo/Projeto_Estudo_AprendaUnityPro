@@ -6,6 +6,8 @@ TagManager:
   tags:
   - CamTrigger
   - CamTrigger2
+  - HitBox
+  - TakeDamage
   layers:
   - Default
   - TransparentFX
@@ -14,7 +16,7 @@ TagManager:
   - Water
   - UI
   - Enemy
-  - 
+  - TakeDamage
   - 
   - 
   - 

@@ -12,6 +12,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 direction;
     private bool isWalk;
 
+
+    [Header("Player Stats")]
+    public int HP = 10;
+
     //Inputs
     public float horizontal;
     public float vertical;
@@ -73,7 +77,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
     public void PlayerMovements() 
     {
         direction = new Vector3(horizontal, 0f, vertical).normalized;
@@ -102,6 +105,32 @@ public class PlayerController : MonoBehaviour
     public void AttackIsDone() 
     {
         isAttack = false;
+    }
+    #endregion
+
+
+    #region Health Parameters 
+    //This segment will be fixed and moved for a separated Script, in which it will be able to see the player health in a screen UI
+
+    public void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "TakeDamage")
+        {
+            GetHit(1);
+        }
+    }
+
+    private void GetHit(int amount) 
+    {
+        HP -= amount;
+        if (HP > 0)
+        {
+            anim.SetTrigger("Hit");
+        }
+        else 
+        {
+            anim.SetTrigger("Die");
+        }
     }
     #endregion
 
