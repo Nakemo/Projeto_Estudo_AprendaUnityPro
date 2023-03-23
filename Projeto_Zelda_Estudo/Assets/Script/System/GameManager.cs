@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
     [Header("Slime AI")]
     public Transform[] slimeWayPoints;
     public float slimeIdleWaitTime = 5f;
-    public float slimeAlertTime = 3f;    
+    public float slimeAlertTime = 3f;
+    public float slimeStopDistance = 1f;
     public float slimedistanceToAttack = 2.3f;
     public float slimeAttackDelay = 1f;
     public float slimeLookAtSpeed = 1f; 

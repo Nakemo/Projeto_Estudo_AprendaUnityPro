@@ -30,7 +30,7 @@ public class SlimeAI : MonoBehaviour
         gameManager = FindObjectOfType(typeof(GameManager)) as GameManager;
         anim = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        //ChangeState(state);
+        ChangeState(state);
     }
 
     private void Update() 
@@ -63,11 +63,15 @@ public class SlimeAI : MonoBehaviour
         {
             isPlayerVisible = true;
 
-            if (state == enemyState.IDLE || state == enemyState.PATROL) 
+            if (state == enemyState.IDLE || state == enemyState.PATROL)
             {
                 ChangeState(enemyState.ALERT);
             }
-            
+            else if (state == enemyState.FOLLOW) 
+            {
+                StopCoroutine("FOLLOW");
+                ChangeState(enemyState.FOLLOW);
+            }
         }
     }
 
@@ -144,7 +148,7 @@ public class SlimeAI : MonoBehaviour
         switch (newState)
         {
             case enemyState.IDLE:
-                agent.stoppingDistance = 0;
+                agent.stoppingDistance = gameManager.slimeStopDistance;
                 destination = transform.position;
                 agent.destination = destination;
 
@@ -152,7 +156,7 @@ public class SlimeAI : MonoBehaviour
                 break;
 
             case enemyState.ALERT:
-                agent.stoppingDistance = 0;
+                agent.stoppingDistance = gameManager.slimeStopDistance;
                 destination = transform.position;
                 agent.destination = destination;
                 isAlert = true;
@@ -160,7 +164,7 @@ public class SlimeAI : MonoBehaviour
                 break;
 
             case enemyState.PATROL:
-                agent.stoppingDistance = 0;
+                agent.stoppingDistance = gameManager.slimeStopDistance;
                 idWayPoint = Random.Range(0, gameManager.slimeWayPoints.Length);
                 destination = gameManager.slimeWayPoints[idWayPoint].position;
                 agent.destination = destination;  
@@ -178,7 +182,6 @@ public class SlimeAI : MonoBehaviour
                 agent.stoppingDistance = gameManager.slimedistanceToAttack;
                 agent.destination = destination;
                 break;
-
         }
         
         state = newState;
@@ -188,7 +191,7 @@ public class SlimeAI : MonoBehaviour
     IEnumerator IDLE() 
     {
         yield return new WaitForSeconds(gameManager.slimeIdleWaitTime);
-        StayStill(60);
+        StayStill(30);
     }
     IEnumerator PATROL() 
     {

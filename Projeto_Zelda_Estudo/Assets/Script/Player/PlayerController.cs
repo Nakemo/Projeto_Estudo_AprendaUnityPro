@@ -33,6 +33,9 @@ public class PlayerController : MonoBehaviour
     Collider[] hitInfo;
     public int amountDmg;
 
+    [Header("Player Audio")]
+    public AudioSource attackAudio;
+
   
     void Start()
     {
@@ -60,6 +63,7 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Fire1") && !isAttack)
         {
             Attack();
+            attackAudio.Play();
         }        
     }
 
