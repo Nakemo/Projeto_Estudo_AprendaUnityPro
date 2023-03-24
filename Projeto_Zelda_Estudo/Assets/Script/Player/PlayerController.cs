@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public float movementSpeed = 3f;
     private Vector3 direction;
     private bool isWalk;
+    private GameObject playerDefenseCollider;
 
 
     [Header("Player Stats")]
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask hitMask;
 
     private bool isAttack;
+
     [SerializeField]
     Collider[] hitInfo;
     public int amountDmg;
@@ -36,7 +38,7 @@ public class PlayerController : MonoBehaviour
     [Header("Player Audio")]
     public AudioSource attackAudio;
 
-  
+
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -55,7 +57,7 @@ public class PlayerController : MonoBehaviour
 
     #region Methods
 
-    public void Inputs()     
+    public void Inputs()
     {
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
@@ -64,10 +66,10 @@ public class PlayerController : MonoBehaviour
         {
             Attack();
             attackAudio.Play();
-        }        
+        }
     }
 
-    public void Attack() 
+    public void Attack()
     {
         isAttack = true;
         anim.SetTrigger("Attack");
@@ -75,13 +77,13 @@ public class PlayerController : MonoBehaviour
 
         hitInfo = Physics.OverlapSphere(hitBox.position, hitRange, hitMask);
 
-        foreach (Collider c in hitInfo) 
+        foreach (Collider c in hitInfo)
         {
             c.gameObject.SendMessage("GetHit", amountDmg, SendMessageOptions.DontRequireReceiver);
         }
     }
 
-    public void PlayerMovements() 
+    public void PlayerMovements()
     {
         direction = new Vector3(horizontal, 0f, vertical).normalized;
 
@@ -100,13 +102,13 @@ public class PlayerController : MonoBehaviour
         chrController.Move(direction * movementSpeed * Time.deltaTime);
     }
 
-    public void UpdateAnimator() 
+    public void UpdateAnimator()
     {
         anim.SetBool("isWalk", isWalk);
     }
 
 
-    public void AttackIsDone() 
+    public void AttackIsDone()
     {
         isAttack = false;
     }
