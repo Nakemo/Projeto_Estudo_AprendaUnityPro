@@ -181,6 +181,7 @@ public class SlimeAI : MonoBehaviour
                 destination = transform.position;
                 agent.stoppingDistance = gameManager.slimedistanceToAttack;
                 agent.destination = destination;
+                
                 break;
         }
         
