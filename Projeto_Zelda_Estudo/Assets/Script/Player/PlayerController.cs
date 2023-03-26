@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    private GameManager gameManager;
     private CharacterController chrController;
     private Animator anim;
 
@@ -41,6 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        gameManager = FindObjectOfType(typeof(GameManager)) as GameManager;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -50,6 +52,8 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if (gameManager.gameState != GameState.GAMEPLAY) { return; }
+
         Inputs();
         PlayerMovements();
         UpdateAnimator();
@@ -135,6 +139,7 @@ public class PlayerController : MonoBehaviour
         }
         else 
         {
+            gameManager.ChangeGameState(GameState.GAMEOVER);
             anim.SetTrigger("Die");
         }
     }

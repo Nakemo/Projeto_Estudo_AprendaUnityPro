@@ -59,6 +59,8 @@ public class SlimeAI : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (gameManager.gameState != GameState.GAMEPLAY) { return; }
+
         if (other.gameObject.tag == "Player") 
         {
             isPlayerVisible = true;
@@ -99,6 +101,7 @@ public class SlimeAI : MonoBehaviour
         }
         else 
         {
+            ChangeState(enemyState.DEAD);
             anim.SetTrigger("Die");
             StartCoroutine("Died");
         }
@@ -107,6 +110,12 @@ public class SlimeAI : MonoBehaviour
 
     private void StateManager() 
     {
+        if (gameManager.gameState == GameState.GAMEOVER && (state == enemyState.FOLLOW || state == enemyState.FURY
+            || state == enemyState.ALERT))
+        {
+            ChangeState(enemyState.IDLE);
+        }
+
         switch (state) 
         {
             case enemyState.ALERT:
@@ -180,9 +189,14 @@ public class SlimeAI : MonoBehaviour
             case enemyState.FURY:
                 destination = transform.position;
                 agent.stoppingDistance = gameManager.slimedistanceToAttack;
-                agent.destination = destination;
-                
+                agent.destination = destination;              
                 break;
+
+            case enemyState.DEAD:
+                destination = transform.position;
+                agent.destination = destination;
+                break;
+
         }
         
         state = newState;

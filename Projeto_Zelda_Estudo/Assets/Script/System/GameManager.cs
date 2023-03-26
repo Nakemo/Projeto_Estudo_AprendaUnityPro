@@ -5,13 +5,21 @@ using UnityEngine.Rendering.PostProcessing;
 
 public enum enemyState 
 {
-    IDLE, ALERT, PATROL, FOLLOW, FURY
+    IDLE, ALERT, PATROL, FOLLOW, FURY, DEAD
+}
+
+public enum GameState 
+{
+    GAMEPLAY, GAMEOVER
 }
 
 
 
 public class GameManager : MonoBehaviour
 {
+    public GameState gameState;
+
+
     public Transform player;
 
     [Header("Slime AI")]
@@ -74,7 +82,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     IEnumerator PostBManager(bool isRain) 
     {
         switch (isRain) 
@@ -99,5 +106,11 @@ public class GameManager : MonoBehaviour
 
                 break;
         }
+    }
+
+
+    public void ChangeGameState(GameState newState) 
+    {
+        gameState = newState;
     }
 }
